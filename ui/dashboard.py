@@ -21,7 +21,6 @@ def setSlidebar():
             "",
             [
                 "Projects",
-                "Profile",
                 "Connect",
                 "Policy",
             ],
