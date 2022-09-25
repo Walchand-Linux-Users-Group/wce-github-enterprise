@@ -17,7 +17,6 @@ def isValid(token):
         jsonObj = res.json()
 
         if jsonObj["fullname"] != "" and jsonObj["username"] != "":
-            streamlit.write("Verified Token")
             return True
         else:
             return False
@@ -43,6 +42,7 @@ def getInfo(token):
         return {
             "fullname": jsonObj["fullname"],
             "username": jsonObj["username"],
+            "moodleId": jsonObj["userid"],
             "token": token,
         }
 

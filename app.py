@@ -17,10 +17,10 @@ streamlit.set_page_config(
 )
 
 hide_menu_style = """
-        <style>
-        #MainMenu {visibility: hidden;}
-        </style>
-        """
+                    <style>
+                    #MainMenu {visibility: hidden;}
+                    </style>
+                    """
 streamlit.markdown(hide_menu_style, unsafe_allow_html=True)
 
 if "token" not in streamlit.session_state:
