@@ -16,6 +16,13 @@ streamlit.set_page_config(
     initial_sidebar_state="expanded",
 )
 
+hide_menu_style = """
+        <style>
+        #MainMenu {visibility: hidden;}
+        </style>
+        """
+streamlit.markdown(hide_menu_style, unsafe_allow_html=True)
+
 if "token" not in streamlit.session_state:
     streamlit.session_state.token = ""
     streamlit.session_state.verified = False
