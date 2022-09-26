@@ -3,9 +3,12 @@ import ui.dashboard
 import api.moodle
 import streamlit
 import os
+from mongoengine import *
 from dotenv import load_dotenv
 
 load_dotenv()
+
+connect(os.getenv("MONGO_DATABASE"), username=os.getenv("MONGO_USER"), password=os.getenv("MONGO_PASS"), authentication_source='admin', host=os.getenv("MONGO_HOST"), port=27017)
 
 WCE_LOGO_PATH = os.getenv("WCE_LOGO_PATH")
 

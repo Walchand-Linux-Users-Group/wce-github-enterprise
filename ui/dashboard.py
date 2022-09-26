@@ -3,7 +3,6 @@ import requests
 from streamlit_option_menu import option_menu
 import ui.components.header
 import ui.components.footer
-import database.mongo
 import backend.user
 import api.github
 
