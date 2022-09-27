@@ -21,7 +21,7 @@ class Team(Document):
 
 
 class Semester(Document):
-    fullname = StringField()
+    name = StringField()
     id = LongField(unique=True)
     teams = ListField(ReferenceField(Team))
 
@@ -34,7 +34,7 @@ class Guide(User):
 class Batch(Document):
     name = StringField()
     id = LongField(unique=True)
-    guides = ListField(ReferenceField(Guide))
+    guides = ListField(ReferenceField(Guide), default=[])
 
 
 class Department(Document):

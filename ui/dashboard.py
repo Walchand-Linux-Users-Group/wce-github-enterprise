@@ -1,13 +1,23 @@
+from database.models import User
 import streamlit
 import requests
 from streamlit_option_menu import option_menu
 import ui.components.header
 import ui.components.footer
 import backend.user
+import database.models
 import api.github
 
 
+def adminSlidebar():
+    pass
+
+
 def setSlidebar():
+
+    if streamlit.session_state.admin:
+        adminSlidebar()
+        return
 
     with streamlit.sidebar:
         streamlit.markdown(
@@ -120,35 +130,47 @@ def getDetails():
 
 
 def guideDashboard():
-    setSlidebar()
+    for batch in database.models.Batch.objects:
+        streamlit.write(batch.name)
+    # for semester in streamlit.session_state.user.semesters:
+    #     streamlit.write(semester.name)
 
 
 def studentDashboard():
     setSlidebar()
 
 
+def adminDashboard():
+    setSlidebar()
+
+
 def dashboard():
     ui.components.header.header()
 
-    user = backend.user.getUser()
-
-    if user == None:
-        getDetails()
+    if streamlit.session_state.admin:
+        adminDashboard()
     else:
-        if isinstance(user, database.models.Guide):
-            if not user.verified:
-                cols = streamlit.columns(3)
-                cols[1].info(
-                    "Contact administrator to verify your faculty account - github@wcewlug.org",
-                    icon="ℹ️",
-                )
-                refresh = cols[1].button("Refresh")
+        user = backend.user.getUser()
 
-                if refresh:
-                    streamlit.experimental_rerun()
-            else:
-                guideDashboard()
+        if user == None:
+            getDetails()
         else:
-            studentDashboard()
+            if isinstance(user, database.models.Guide):
+                if not user.verified:
+                    cols = streamlit.columns(3)
+                    cols[1].info(
+                        "Contact administrator to verify your faculty account - github@wcewlug.org",
+                        icon="ℹ️",
+                    )
+                    refresh = cols[1].button("Refresh")
+
+                    if refresh:
+                        streamlit.experimental_rerun()
+                else:
+                    streamlit.session_state.user = user
+                    guideDashboard()
+            else:
+                streamlit.session_state.user = user
+                studentDashboard()
 
     ui.components.footer.footer()

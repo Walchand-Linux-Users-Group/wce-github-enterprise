@@ -8,7 +8,14 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-connect(os.getenv("MONGO_DATABASE"), username=os.getenv("MONGO_USER"), password=os.getenv("MONGO_PASS"), authentication_source='admin', host=os.getenv("MONGO_HOST"), port=27017)
+connect(
+    os.getenv("MONGO_DATABASE"),
+    username=os.getenv("MONGO_USER"),
+    password=os.getenv("MONGO_PASS"),
+    authentication_source="admin",
+    host=os.getenv("MONGO_HOST"),
+    port=27017,
+)
 
 WCE_LOGO_PATH = os.getenv("WCE_LOGO_PATH")
 
@@ -30,16 +37,21 @@ if "token" not in streamlit.session_state:
     streamlit.session_state.token = ""
     streamlit.session_state.verified = False
     streamlit.session_state.data = {}
+    streamlit.session_state.admin = False
 
 if not api.moodle.isValid(streamlit.session_state.token):
     streamlit.session_state.data = ui.login.login()
 
-    try:
-        streamlit.session_state.token = streamlit.session_state.data["token"]
-        streamlit.session_state.verified = True
-    except Exception as e:
+    if streamlit.session_state.admin:
         streamlit.session_state.token = ""
-        streamlit.session_state.verified = False
+        streamlit.session_state.verified = True
+    else:
+        try:
+            streamlit.session_state.token = streamlit.session_state.data["token"]
+            streamlit.session_state.verified = True
+        except Exception as e:
+            streamlit.session_state.token = ""
+            streamlit.session_state.verified = False
 
     if streamlit.session_state.verified == True:
         streamlit.experimental_rerun()

@@ -4,6 +4,10 @@ import os
 
 
 def isValid(token):
+
+    if streamlit.session_state.admin:
+        return True
+
     try:
         res = requests.get(
             os.getenv("MOODLE_SIGNIN"),
