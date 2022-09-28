@@ -38,6 +38,6 @@ class Batch(Document):
 
 
 class Department(Document):
-    name = StringField()
-    id = LongField(unique=True)
-    batches = ListField(ReferenceField(Batch))
+    orgName = StringField()
+    orgId = LongField(required=True, unique=True)
+    batches = ListField(ReferenceField(Batch), default=[])

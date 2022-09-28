@@ -16,8 +16,8 @@ def login():
 
     cols = streamlit.columns([1, 1, 1])
     cols[1].header("Authentication")
-    username = cols[1].text_input("Username")
-    password = cols[1].text_input("Password", type="password")
+    username = cols[1].text_input("Username", autocomplete=None)
+    password = cols[1].text_input("Password", type="password", autocomplete=None)
     loginBtn = cols[1].button("Log In")
 
     if loginBtn:

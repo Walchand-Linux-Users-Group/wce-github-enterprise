@@ -1,77 +1,13 @@
 from database.models import User
 import streamlit
-import requests
-from streamlit_option_menu import option_menu
 import ui.components.header
 import ui.components.footer
 import backend.user
 import database.models
 import api.github
-
-
-def adminSlidebar():
-    pass
-
-
-def setSlidebar():
-
-    if streamlit.session_state.admin:
-        adminSlidebar()
-        return
-
-    with streamlit.sidebar:
-        streamlit.markdown(
-            """<h1>Welcome,</h1>
-        <h3>{}</h3>""".format(
-                streamlit.session_state.data["fullname"]
-            ),
-            unsafe_allow_html=True,
-        )
-
-        streamlit.sidebar.markdown("<hr />", unsafe_allow_html=True)
-        main_option = option_menu(
-            "",
-            [
-                "Projects",
-                "Connect",
-                "Policy",
-            ],
-            icons=["house", "person", "gear", "book"],
-            default_index=0,
-        )
-
-        if main_option == "Services":
-            selected = option_menu(
-                "",
-                ["Compute", "Keypair"],
-                icons=["laptop", "key"],
-                orientation="horizontal",
-                default_index=0,
-            )
-        elif main_option == "Public API":
-            selected = option_menu(
-                "",
-                ["Compute", "User"],
-                icons=["laptop", "person"],
-                orientation="horizontal",
-                default_index=0,
-            )
-        elif main_option == "Premium":
-            selected = option_menu(
-                "",
-                ["Features", "Get Premium"],
-                icons=["pin", "star"],
-                orientation="horizontal",
-                default_index=0,
-            )
-        elif main_option == "Developers":
-            selected = option_menu(
-                "",
-                ["Students", "Faculty"],
-                icons=["person", "person"],
-                orientation="horizontal",
-                default_index=0,
-            )
+import ui.admin
+import ui.guide
+import ui.student
 
 
 def getDetails():
@@ -129,26 +65,11 @@ def getDetails():
                 cols[1].warning("Github username already registered", icon="⚠️")
 
 
-def guideDashboard():
-    for batch in database.models.Batch.objects:
-        streamlit.write(batch.name)
-    # for semester in streamlit.session_state.user.semesters:
-    #     streamlit.write(semester.name)
-
-
-def studentDashboard():
-    setSlidebar()
-
-
-def adminDashboard():
-    setSlidebar()
-
-
 def dashboard():
     ui.components.header.header()
 
     if streamlit.session_state.admin:
-        adminDashboard()
+        ui.admin.adminDashboard()
     else:
         user = backend.user.getUser()
 
@@ -168,9 +89,9 @@ def dashboard():
                         streamlit.experimental_rerun()
                 else:
                     streamlit.session_state.user = user
-                    guideDashboard()
+                    ui.guide.guideDashboard()
             else:
                 streamlit.session_state.user = user
-                studentDashboard()
+                ui.student.studentDashboard()
 
     ui.components.footer.footer()

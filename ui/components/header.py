@@ -2,7 +2,6 @@ import streamlit
 from streamlit_option_menu import option_menu
 import os
 from PIL import Image
-import ui.components.footer
 
 
 def header():
@@ -43,7 +42,7 @@ def header():
             unsafe_allow_html=True,
         )
         streamlit.markdown(
-            "<h2 style='text-align: center; color: black'>Project Manager</h2>",
+            "<h2 style='text-align: center; color: black'>Project Management Console</h2>",
             unsafe_allow_html=True,
         )
 
